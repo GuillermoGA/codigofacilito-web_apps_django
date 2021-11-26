@@ -27,6 +27,6 @@ def login_view(request):
         if user:
             login(request,  user)
 
-        return render(request, 'users/login.html', {
+    return render(request, 'users/login.html', {
 
-        })
+    })
