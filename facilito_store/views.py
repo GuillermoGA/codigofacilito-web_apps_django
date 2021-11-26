@@ -52,7 +52,7 @@ def register(request):
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
 
-        user = User.objects.create_user(username, email, password)
+        user = form.save()
 
         if user:
             login(request, user)
