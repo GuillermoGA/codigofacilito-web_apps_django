@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from django.contrib.auth import authenticate
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -37,3 +37,8 @@ def login_view(request):
     return render(request, 'users/login.html', {
 
     })
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'Sesion cerrada exitosamente')
+    return redirect('login')
