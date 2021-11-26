@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 
 from .forms import RegisterForm
-
+from django.contrib.auth.models import User
 
 def index(request):
     return render(request, 'index.html', {
@@ -51,6 +51,13 @@ def register(request):
         username = form.cleaned_data.get('username')
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
+
+        user = User.objects.create_user(username, email, password)
+
+        if user:
+            login(request, user)
+            messages.success(request, 'Usuario creado exitosamente')
+            return redirect('index')
 
     return render(request, 'users/register.html', {
         'form': form
