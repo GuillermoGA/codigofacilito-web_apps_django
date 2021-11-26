@@ -12,3 +12,8 @@ def index(request):
             {'title': 'Mochila', 'price': 20, 'stock': False},
         ]
     })
+
+def login_view(request):
+    return render(request, 'users/login.html', {
+        
+    })
