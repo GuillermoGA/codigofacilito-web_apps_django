@@ -4,6 +4,8 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 
+from django.shortcuts import redirect
+
 
 def index(request):
     return render(request, 'index.html', {
@@ -26,6 +28,7 @@ def login_view(request):
 
         if user:
             login(request,  user)
+            return redirect('index')
 
     return render(request, 'users/login.html', {
 
