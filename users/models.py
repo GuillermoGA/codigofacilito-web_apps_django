@@ -8,3 +8,7 @@ class Customer(User):
 
     def get_product(self):
         return []
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField()
