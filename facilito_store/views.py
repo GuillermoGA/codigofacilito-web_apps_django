@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 
 from .forms import RegisterForm
-from django.contrib.auth.models import User
+from users.models import User
 from products.models import Product
 
 def index(request):
@@ -21,7 +21,7 @@ def index(request):
 
 
 def login_view(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect('index')
 
     if request.method == "POST":
@@ -47,17 +47,13 @@ def logout_view(request):
     return redirect('login')
 
 def register(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect('index')
 
     form = RegisterForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
-        username = form.cleaned_data.get('username')
-        email = form.cleaned_data.get('email')
-        password = form.cleaned_data.get('password')
-
         user = form.save()
-
+        
         if user:
             login(request, user)
             messages.success(request, 'Usuario creado exitosamente')
