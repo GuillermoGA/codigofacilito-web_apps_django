@@ -4,6 +4,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from .models import Product
 
+from django.db.models import Q
 # Create your views here.
 class ProductListView(ListView):
     template_name = 'index.html'
@@ -23,8 +24,9 @@ class ProductSearchListView(ListView):
     template_name = 'products/search.html'
 
     def get_queryset(self):
+        filters = Q(title__icontains=self.query()) | Q(category__title__icontains=self.query())
         # SELECT * FROM Products WHERE title LIKE %query%
-        return Product.objects.filter(title__icontains=self.query())
+        return Product.objects.filter(filters)
 
     def query(self):
         return self.request.GET.get('q')
