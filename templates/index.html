@@ -2,18 +2,9 @@
 
 {% block content %}
 <div class="col">
-    <h1>{{ message }}</h1>
-    <ul class="list-group">
-        {% for product in products %}
-            <li class="list-group-item">
-                {{ product.title }}
-                    {% if product.stock %}
-                    <span class="text-success">Disponible</span>
-                    {% else %}
-                    <span class="text-danger">No disponible</span>
-                    {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
+    <h4 class="text-center">{{ message }}</h4>
+    {% include 'products/snippets/search.html' %}
+    {% include 'products/snippets/list.html' %}
+
 </div>
 {% endblock %}

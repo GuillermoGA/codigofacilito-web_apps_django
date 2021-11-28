@@ -1,0 +1,26 @@
+[
+{
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+        "title": "Mochila",
+        "description": "mochila",
+        "price": "10.00",
+        "slug": "mochila",
+        "image": "products/mochila.png",
+        "created_at": "2021-11-28T11:28:28.156Z"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 2,
+    "fields": {
+        "title": "Camiseta Rosito",
+        "description": "Camiseta de LIDLT T3",
+        "price": "20.00",
+        "slug": "camiseta-rosito",
+        "image": "products/rosito.jpg",
+        "created_at": "2021-11-28T15:47:30.358Z"
+    }
+}
+]
