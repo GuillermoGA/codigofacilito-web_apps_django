@@ -21,7 +21,7 @@ def index(request):
 
 
 def login_view(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect('index')
 
     if request.method == "POST":
@@ -47,7 +47,7 @@ def logout_view(request):
     return redirect('login')
 
 def register(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect('index')
 
     form = RegisterForm(request.POST or None)
