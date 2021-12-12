@@ -1,0 +1,25 @@
+[
+{
+    "model": "categories.category",
+    "pk": 1,
+    "fields": {
+        "title": "Ropa",
+        "description": "Ropa",
+        "created_at": "2021-11-28T23:09:40.317Z",
+        "products": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "categories.category",
+    "pk": 2,
+    "fields": {
+        "title": "Juguete",
+        "description": "Jueguetes",
+        "created_at": "2021-11-28T23:09:58.261Z",
+        "products": []
+    }
+}
+]

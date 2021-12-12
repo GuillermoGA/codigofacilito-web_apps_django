@@ -15,7 +15,7 @@ def index(request):
     products = Product.objects.all().order_by('-id')
     return render(request, 'index.html', {
         'message': 'Listado de productos',
-        'title': 'Prodi¡uctos',
+        'title': 'Productos',
         'products': products
     })
 
