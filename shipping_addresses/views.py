@@ -19,7 +19,7 @@ class ShippingAddressListView(LoginRequiredMixin, ListView):
         return ShippingAddress.objects.filter(user=self.request.user).order_by('-default')
 
 
-class ShippingAddressUpdateView(LoginRequiredMixin, SuccessMessageMixin , UpdateView):
+class ShippingAddressUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     login_url = 'login'
     model = ShippingAddress
     form_class = ShippingAddressForm
@@ -27,18 +27,29 @@ class ShippingAddressUpdateView(LoginRequiredMixin, SuccessMessageMixin , Update
     success_message = 'Dirección actualizada exitosamente'
 
     def get_success_url(self):
-        return reverse ("shipping_addresses:shipping_addresses")
+        return reverse("shipping_addresses:shipping_addresses")
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.id != self.get_object().user_id:
-            return redirect("carts:cart") 
+            return redirect("carts:cart")
         return super(ShippingAddressUpdateView, self).dispatch(request, *args, **kwargs)
+
 
 class ShippingAddressDeleteView(LoginRequiredMixin, DeleteView):
     login_url = 'login'
     model = ShippingAddress
     template_name = 'shipping_addresses/delete.html'
     success_url = reverse_lazy("shipping_addresses:shipping_addresses")
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.get_object().default:
+            return redirect("shipping_addresses:shipping_addresses")
+        
+        if request.user.id != self.get_object().user_id:
+            return redirect("carts:cart")
+        return super(ShippingAddressDeleteView, self).dispatch(request, *args, **kwargs)
+
+
 @login_required(login_url='login')
 def create(request):
     form = ShippingAddressForm(request.POST or None)
