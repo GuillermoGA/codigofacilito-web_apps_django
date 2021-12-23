@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView
 
@@ -44,7 +44,7 @@ class ShippingAddressDeleteView(LoginRequiredMixin, DeleteView):
     def dispatch(self, request, *args, **kwargs):
         if self.get_object().default:
             return redirect("shipping_addresses:shipping_addresses")
-        
+
         if request.user.id != self.get_object().user_id:
             return redirect("carts:cart")
         return super(ShippingAddressDeleteView, self).dispatch(request, *args, **kwargs)
@@ -57,7 +57,7 @@ def create(request):
     if request.method == "POST" and form.is_valid():
         shipping_address = form.save(commit=False)
         shipping_address.user = request.user
-        shipping_address.default = not ShippingAddress.objects.filter(user=request.user).exists()
+        shipping_address.default = not request.user.has_shipping_address()
         shipping_address.save()
 
         messages.success(request, 'Direccion creada existosamente')
@@ -66,3 +66,17 @@ def create(request):
     return render(request, 'shipping_addresses/create.html', {
         "form": form
     })
+
+
+@login_required(login_url='login')
+def default(request, pk):
+    shipping_addresses = get_object_or_404(ShippingAddress, pk=pk)
+
+    if request.user.id != shipping_addresses.user_id:
+        return redirect("carts:cart")
+
+    if request.user.has_shipping_address():
+        request.user.shipping_address.update_default(False)
+    shipping_addresses.update_default(True)
+
+    return redirect("shipping_addresses:shipping_addresses")
