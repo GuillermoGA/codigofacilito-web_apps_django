@@ -1,4 +1,6 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
 
@@ -6,7 +8,8 @@ from shipping_addresses.forms import ShippingAddressForm
 from shipping_addresses.models import ShippingAddress
 
 
-class ShippingAddressListView(ListView):
+class ShippingAddressListView(LoginRequiredMixin, ListView):
+    login_url = 'login'
     model = ShippingAddress
     template_name = 'shipping_addresses/shipping_addresses.html'
 
@@ -14,6 +17,7 @@ class ShippingAddressListView(ListView):
         return ShippingAddress.objects.filter(user=self.request.user).order_by('-default')
 
 
+@login_required(login_url='login')
 def create(request):
     form = ShippingAddressForm(request.POST or None)
 
