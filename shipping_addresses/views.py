@@ -29,6 +29,10 @@ class ShippingAddressUpdateView(LoginRequiredMixin, SuccessMessageMixin , Update
     def get_success_url(self):
         return reverse ("shipping_addresses:shipping_addresses")
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.id != self.get_object().user_id:
+            return redirect("carts:cart") 
+        return super(ShippingAddressUpdateView, self).dispatch(request, *args, **kwargs)
 
 @login_required(login_url='login')
 def create(request):
