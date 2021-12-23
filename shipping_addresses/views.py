@@ -1,8 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.urls import reverse
+from django.views.generic import ListView, UpdateView
 
 from shipping_addresses.forms import ShippingAddressForm
 from shipping_addresses.models import ShippingAddress
@@ -15,6 +17,17 @@ class ShippingAddressListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return ShippingAddress.objects.filter(user=self.request.user).order_by('-default')
+
+
+class ShippingAddressUpdateView(LoginRequiredMixin, SuccessMessageMixin , UpdateView):
+    login_url = 'login'
+    model = ShippingAddress
+    form_class = ShippingAddressForm
+    template_name = 'shipping_addresses/update.html'
+    success_message = 'Dirección actualizada exitosamente'
+
+    def get_success_url(self):
+        return reverse ("shipping_addresses:shipping_addresses")
 
 
 @login_required(login_url='login')
