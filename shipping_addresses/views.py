@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.views.generic import ListView, UpdateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, UpdateView, DeleteView
 
 from shipping_addresses.forms import ShippingAddressForm
 from shipping_addresses.models import ShippingAddress
@@ -34,6 +34,11 @@ class ShippingAddressUpdateView(LoginRequiredMixin, SuccessMessageMixin , Update
             return redirect("carts:cart") 
         return super(ShippingAddressUpdateView, self).dispatch(request, *args, **kwargs)
 
+class ShippingAddressDeleteView(LoginRequiredMixin, DeleteView):
+    login_url = 'login'
+    model = ShippingAddress
+    template_name = 'shipping_addresses/delete.html'
+    success_url = reverse_lazy("shipping_addresses:shipping_addresses")
 @login_required(login_url='login')
 def create(request):
     form = ShippingAddressForm(request.POST or None)
