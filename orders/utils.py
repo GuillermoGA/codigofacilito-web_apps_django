@@ -15,7 +15,7 @@ def get_or_create_order(cart, request):
     return order
 
 
-def breadcrumb(products=True, addres=False, payment=False, confirmation=False):
+def breadcrumb(products=True, address=False, payment=False, confirmation=False):
     return [
         {
             "title": "Productos",
@@ -24,8 +24,8 @@ def breadcrumb(products=True, addres=False, payment=False, confirmation=False):
         },
         {
             "title": "Dirección",
-            "active": addres,
-            "url": reverse("orders:order")
+            "active": address,
+            "url": reverse("orders:address")
         },
         {
             "title": "Pago",
