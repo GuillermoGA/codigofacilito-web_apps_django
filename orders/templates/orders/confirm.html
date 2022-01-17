@@ -61,6 +61,9 @@
         </div>
     </div>
     <div class="col">
-
+        {% include 'orders/snippets/resume.html' %}
+        <div class="mt-2">
+            <a href="{% url 'orders:cancel' %}" class="btn btn-danger">Cancelar orden</a>
+        </div>
     </div>
 {% endblock %}
