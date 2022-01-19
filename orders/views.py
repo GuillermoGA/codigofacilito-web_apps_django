@@ -1,6 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import EmptyQuerySet
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView
 
 from carts.utils import destroy_cart
 from carts.utils import get_or_create_cart
@@ -9,6 +12,12 @@ from orders.utils import breadcrumb, destroy_order
 from orders.utils import get_or_create_order
 from shipping_addresses.models import ShippingAddress
 
+class OrderListView(LoginRequiredMixin, ListView):
+    login_url = 'login'
+    template_name = 'orders/orders.html'
+
+    def get_queryset(self):
+        return self.request.user.orders_completed()
 
 @login_required(login_url='login')
 def order(request):
@@ -115,3 +124,4 @@ def complete(request):
 
     messages.success(request, 'Compra completada exitosamente')
     return redirect('index')
+
