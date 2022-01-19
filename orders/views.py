@@ -1,3 +1,5 @@
+import threading
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -107,7 +109,9 @@ def complete(request, cart, order):
         return redirect('carts:cart')
 
     order.complete()
-    Mail.send_complete_order(order, request.user)
+
+    thread = threading.Thread(target=Mail.send_complete_order, args=(order, request.user))
+    thread.start()
 
     destroy_cart(request)
     destroy_order(request)
