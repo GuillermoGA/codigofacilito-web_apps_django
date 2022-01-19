@@ -21,6 +21,8 @@ from django.contrib.auth.models import AbstractUser
 # id
 # password
 # last_login
+from orders.common import OrderStatus
+
 
 class User(AbstractUser):
     
@@ -33,6 +35,17 @@ class User(AbstractUser):
 
     def has_shipping_address(self):
         return self.shipping_address is not None
+
+    def orders_completed(self):
+        return self.order_set.filter(status=OrderStatus.COMPLETED).order_by('-id')
+
+    def has_shipping_addresses(self):
+        return self.shippingaddress_set.exists()
+
+    @property
+    def addresses(self):
+        return self.shippingaddress_set.all()
+
 
 class Customer(User):
     class Meta:

@@ -1,22 +1,12 @@
 import uuid
-from enum import Enum
 
 from django.db import models
 from django.db.models.signals import pre_save
 
 from carts.models import Cart
+from orders.common import OrderStatus, choices
 from shipping_addresses.models import ShippingAddress
 from users.models import User
-
-
-class OrderStatus(Enum):
-    CREATED = "CREATED"
-    PAYED = "PAYED"
-    COMPLETED = "COMPLETED"
-    CANCELED = "CANCELED"
-
-
-choices = [(tag, tag.value) for tag in OrderStatus]
 
 
 class Order(models.Model):
@@ -46,6 +36,14 @@ class Order(models.Model):
 
     def update_shipping_address(self, shipping_address):
         self.shipping_address = shipping_address
+        self.save()
+
+    def cancel(self):
+        self.status = OrderStatus.CANCELED
+        self.save()
+
+    def complete(self):
+        self.status = OrderStatus.COMPLETED
         self.save()
 
     def update_total(self):
