@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from carts.utils import destroy_cart
 from carts.utils import get_or_create_cart
+from orders.mails import Mail
 from orders.utils import breadcrumb, destroy_order
 from orders.utils import get_or_create_order
 from shipping_addresses.models import ShippingAddress
@@ -107,6 +108,7 @@ def complete(request):
         return redirect('carts:cart')
 
     order.complete()
+    Mail.send_complete_order(order, request.user)
 
     destroy_cart(request)
     destroy_order(request)
