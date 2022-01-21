@@ -7,7 +7,7 @@ from promo_codes.models import PromoCode
 @validate_cart_and_order
 def validate(request, cart, order):
     code = request.GET.get("code")
-    promo_code = PromoCode.objects.filter(code=code).first()
+    promo_code = PromoCode.objects.get_valid(code)
 
     if promo_code is None:
         return JsonResponse({
