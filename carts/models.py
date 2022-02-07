@@ -48,6 +48,10 @@ class Cart(models.Model):
     def order(self):
         return self.order_set.filter(status=OrderStatus.CREATED).first()
 
+    @property
+    def has_products(self):
+        return self.products.exists()
+
 
 class CartProductsManager(models.Manager):
 

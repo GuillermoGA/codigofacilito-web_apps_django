@@ -30,7 +30,7 @@ def breadcrumb(products=True, address=False, payment=False, confirmation=False):
         {
             "title": "Pago",
             "active": payment,
-            "url": reverse("orders:order")
+            "url": reverse("orders:payment")
         },
         {
             "title": "Confirmación",
