@@ -83,6 +83,10 @@ class Order(models.Model):
     def get_total(self):
         return self.cart.total + self.shipping_total - decimal.Decimal(self.get_discount())
 
+    @property
+    def description(self):
+        return f"Compra por ({self.cart.products.count()}) productos"
+
 
 def set_order_id(sender, instance, *args, **kwargs):
     if not instance.order_id:

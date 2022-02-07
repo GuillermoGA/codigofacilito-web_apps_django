@@ -3,6 +3,9 @@ from django.db import models
 from orders.models import Order
 from users.models import User
 
+class ChargeManager(models.Manager):
+    def create_charge(self, order):
+        pass
 
 class Charge(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -12,6 +15,8 @@ class Charge(models.Model):
     payment_method = models.CharField(max_length=50)
     status = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = ChargeManager()
 
     def __str__(self):
         return self.charge_id
